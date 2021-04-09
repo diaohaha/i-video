@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="https://vjs.zencdn.net/7.11.4/video-js.css">
+  <script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
+  <style type="text/css">
+    .tip {
+      position:absolute;
+      height:40px;
+      width:250px;
+      top:20px;
+      left:20px;
+      z-index:200;
+      display:block;
+      background:rgba(0, 0, 0, 0);
+      font-size: 40px;
+      font-style:center;
+      color:red;
+    }
+  </style>
+</head>
+<body>
+  <video id="example_video_1" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="none"  autoplay="autoplay" muted>
+    <source src="https://diaohaha-file.oss-cn-hangzhou.aliyuncs.com/blog/example.mp4" type="video/mp4" />
+  </video>
+  <div class="tip">
+    <div class="timetxt" id="time_count"></div>
+  </div>
+
+  <script>  
+  function getUrlParam(name) {
+   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+   var r = window.location.search.substr(1).match(reg);
+   if (r != null) return unescape(r[2]); return null;
+  }
+
+    var myPlayer;
+    videojs("example_video_1").ready(function(){
+      myPlayer = this;
+      var t;
+      t = getUrlParam('time');
+      myPlayer.currentTime(t);
+      src = getUrlParam('src');
+      myPlayer.src(src);
+      myPlayer.pause();
+      myPlayer.on("timeupdate", onProgress);
+    });
+    var myTextArea = document.getElementById('time_count');
+    function onProgress() {
+      console.log(myPlayer.duration());
+      myTextArea.innerHTML = myPlayer.currentTime();
+      return false;
+    }
+  </script>
+</body>
+</html>
